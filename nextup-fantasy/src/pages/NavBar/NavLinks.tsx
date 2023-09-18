@@ -50,7 +50,7 @@ function NavLinks() {
               </button>
             </li>
             <li>
-              <button className="hover:text-gray-500 duration-500 transition-all drop-shadow-xl  hover:bg-match-orange p-2 h-[60px] w-[100px] rounded text-white no-underline">
+              <button className="hover:text-gray-500 duration-500 transition-all drop-shadow-xl  hover:bg-match-orange p-2 h-[0px] w-[100px] rounded text-white no-underline">
                 Ai Advice
               </button>
             </li>

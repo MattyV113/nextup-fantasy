@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -9,8 +9,10 @@ import '../../index.css';
 import { Login } from '../Credentials/Login.tsx';
 import { Logout } from '../Credentials/Logout.tsx';
 import { gapi } from 'gapi-script';
+import { AuthContext } from '../../context/authContext.tsx';
 
 const Navbar = () => {
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,8 +40,15 @@ const Navbar = () => {
         </div>
         <NavLinks />
         <div className="flex items-center gap-4">
-          <Login />
-          <Logout />
+          {currentUser ? (
+            <img
+              className="rounded-full w-[50px] h-[50px]"
+              src={currentUser ? currentUser.imageUrl : ''}
+              referrerpolicy="no-referrer"
+            />
+          ) : (
+            <Login setCurrentUser={setCurrentUser} />
+          )}
 
           <BurgerBar />
         </div>
