@@ -1,27 +1,29 @@
 import { createContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import {
-  GoogleLogin,
-  GoogleLogout,
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-} from 'react-google-login';
 
-type Props = {
+export type Props = {
   children: React.ReactNode;
 };
 
 export type AuthContextType = {
-  currentUser: object;
-  setCurrentUser: React.SetStateAction<object>;
+  currentUser: object | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserType | null>>;
 };
 
-export const AuthContext = createContext<AuthContextType | undefined>(
+export type UserType = {
+  email: string;
+  familyName: string;
+  givenName: string;
+  googleId: string;
+  imageUrl: string;
+  name: string;
+};
+
+export const AuthContext = createContext<AuthContextType>(
   {} as AuthContextType
 );
 
 export const AuthContextProvider = ({ children }: Props) => {
-  const [currentUser, setCurrentUser] = useState<AuthContextType>(
+  const [currentUser, setCurrentUser] = useState<UserType | null>(
     JSON.parse(localStorage.getItem('user') as string)
   );
 

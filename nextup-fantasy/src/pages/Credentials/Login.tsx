@@ -4,16 +4,19 @@ import {
   GoogleLoginResponseOffline,
 } from 'react-google-login';
 
-import { useState } from 'react';
+import { AuthContextType } from '../../context/authContext';
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-export const Login = ({ setCurrentUser }) => {
+export const Login = ({ setCurrentUser }: AuthContextType) => {
   const onSuccess = (
-    response: GoogleLoginResponse | GoogleLoginResponseOffline
-  ) => {
-    console.log('User Logged In', response);
-    setCurrentUser(response.profileObj);
+    res: GoogleLoginResponse | GoogleLoginResponseOffline
+  ): void => {
+    if ('profileObj' in res) {
+      setCurrentUser(res.profileObj);
+    }
+
+    console.log('User Logged In', res);
   };
 
   const onFailure = (

@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { RxHamburgerMenu } from 'react-icons/rx';
-import { AiOutlineClose } from 'react-icons/ai';
+import { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import NavLinks from './NavLinks.tsx';
 import BurgerBar from './BurgerBar';
 import NextUpLogo from '../../assets/NextUp Fantasy-logos.jpeg';
 import '../../index.css';
 import { Login } from '../Credentials/Login.tsx';
-import { Logout } from '../Credentials/Logout.tsx';
 import { gapi } from 'gapi-script';
-import { AuthContext } from '../../context/authContext.tsx';
+import { AuthContext, AuthContextType } from '../../context/authContext.tsx';
+import { Logout } from '../Credentials/Logout.tsx';
 
 const Navbar = () => {
-  const { currentUser, setCurrentUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const authContext = useContext<AuthContextType>(AuthContext);
 
   useEffect(() => {
     function start() {
@@ -40,14 +37,26 @@ const Navbar = () => {
         </div>
         <NavLinks />
         <div className="flex items-center gap-4">
-          {currentUser ? (
-            <img
-              className="rounded-full w-[50px] h-[50px]"
-              src={currentUser ? currentUser.imageUrl : ''}
-              referrerpolicy="no-referrer"
-            />
+          {authContext?.currentUser ? (
+            <>
+              <img
+                className="rounded-full w-[50px] h-[50px]"
+                src={
+                  (authContext.currentUser as { imageUrl?: string })
+                    ?.imageUrl || ''
+                }
+                referrerPolicy="no-referrer"
+              />
+              <Logout
+                setCurrentUser={authContext?.setCurrentUser}
+                currentUser={authContext.currentUser}
+              />
+            </>
           ) : (
-            <Login setCurrentUser={setCurrentUser} />
+            <Login
+              setCurrentUser={authContext?.setCurrentUser}
+              currentUser={authContext.currentUser}
+            />
           )}
 
           <BurgerBar />

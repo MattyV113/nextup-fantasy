@@ -1,11 +1,15 @@
 import { GoogleLogout } from 'react-google-login';
+import { AuthContextType } from '../../context/authContext';
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-export const Logout = ({ setUser }) => {
+export const Logout = ({ setCurrentUser, currentUser }: AuthContextType) => {
   const onSuccess = () => {
-    console.log('User logged out');
-    setUser(null);
+    if (currentUser !== null) {
+      setCurrentUser(null);
+      localStorage.removeItem('user');
+      console.log('User logged out');
+    }
   };
 
   return (
