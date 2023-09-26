@@ -4,11 +4,17 @@ import './index.css';
 import * as React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AuthContextProvider } from './context/authContext.tsx';
+import WeeklyRanks from './pages/WeeklyRanks.tsx';
+import Navbar from './pages/NavBar/Navbar.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+  },
+  {
+    path: '/weekly-rankings',
+    element: <WeeklyRanks />,
   },
 ]);
 
