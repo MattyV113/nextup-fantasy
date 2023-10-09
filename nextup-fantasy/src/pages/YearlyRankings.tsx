@@ -42,17 +42,22 @@ type PlayerData = {
   };
 };
 
-function WeeklyRanks() {
+function YearlyRanks() {
   const scoringButtons = [
     { Name: 'Scoring Format', buttons: ['PPR', 'Half PPR', 'Standard'] },
     { Name: 'Position', buttons: ['QB', 'RB', 'WR', 'TE'] },
   ];
 
-  const [selectedScoring, setSelectedScoring] = useState<string | null>(null);
+  const [week, setWeek] = useState<string>('5');
+  const [selectedScoring, setSelectedScoring] = useState<string | null>('PPR');
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
-  const [pointsPerRec, setPointsPerRec] = useState<number | null>(null);
+  const [pointsPerRec, setPointsPerRec] = useState<string | null>(null);
   const [position, setPosition] = useState<string | null>(null);
   const [playerData, setPlayerData] = useState<PlayerData>({});
+
+  const handleWeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWeek(e.currentTarget.value);
+  };
 
   const handleButtonClick = (categoryName: string, buttonName: string) => {
     if (categoryName === 'Scoring Format') {
@@ -60,11 +65,11 @@ function WeeklyRanks() {
         prevSelected === buttonName ? null : buttonName
       );
       if (buttonName === 'PPR') {
-        setPointsPerRec(1);
+        setPointsPerRec('1');
       } else if (buttonName === 'Half PPR') {
-        setPointsPerRec(0.5);
+        setPointsPerRec('0.5');
       } else if (buttonName === 'Standard') {
-        setPointsPerRec(0);
+        setPointsPerRec('0');
       }
     } else if (categoryName === 'Position') {
       setSelectedPosition((prevSelected) =>
@@ -85,7 +90,7 @@ function WeeklyRanks() {
     }
   };
 
-  const url = `https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLProjections?week=4&twoPointConversions=2&passYards=.04&passAttempts=0&passTD=6&passCompletions=0&passInterceptions=-4&pointsPerReception=${pointsPerRec}&carries=0&rushYards=.1&rushTD=6&fumbles=-2&receivingYards=.1&receivingTD=6&targets=.1`;
+  const url = `https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLProjections?week=${week}&twoPointConversions=2&passYards=.04&passAttempts=0&passTD=6&passCompletions=0&passInterceptions=-4&pointsPerReception=${pointsPerRec}&carries=0&rushYards=.1&rushTD=6&fumbles=-2&receivingYards=.1&receivingTD=6&targets=.1`;
 
   const options = useMemo(
     () => ({
@@ -114,8 +119,7 @@ function WeeklyRanks() {
     getPlayerData();
 
     setSelectedPosition('QB');
-    setSelectedScoring('PPR');
-    setPointsPerRec(1);
+    setPointsPerRec('1');
     setPosition('QB');
   }, [options, url]);
 
@@ -135,7 +139,7 @@ function WeeklyRanks() {
       <Navbar />
       <div>
         <div className="flex flex-col justify-center mt-4">
-          <h1>Week 4 Rankings</h1>
+          <h1>Week {week} Rankings</h1>
           <br />
           <ul className="flex flex-row m-auto gap-[120px]">
             {scoringButtons.map((category) => (
@@ -159,23 +163,31 @@ function WeeklyRanks() {
                 ))}
               </div>
             ))}
+            <li>
+              <label>Choose Week</label>
+              <input
+                className="rounded p-2"
+                value={week}
+                onChange={handleWeekChange}
+              />
+            </li>
           </ul>
           <br />
           <br />
           <br />
           <h1>{position} Rankings</h1>
 
-          <div className="flex flex-col gap-4 mr-auto mt-[100px] h-[100vh]">
+          <div className="flex w-full flex-col gap-4 mr-auto mt-[100px] h-[100vh]">
             {positionPlayerData.map((playerID, idx) => {
               const data = playerData[playerID];
 
               // Extract specific data points for the current playerData here
               return (
                 <div
-                  className="flex flex-row gap-4 rounded bg-white text-black p-4"
+                  className="flex w-[50%] m-auto justify-between  flex-row gap-4 rounded text-white border border-white p-4"
                   key={playerID}
                 >
-                  <p>{idx + 1}</p>
+                  <p className="">{idx + 1}</p>
                   <h2>Player: {data.longName}</h2>
                   <p>Projection: {data.fantasyPoints}</p>
                 </div>
@@ -188,4 +200,4 @@ function WeeklyRanks() {
   );
 }
 
-export default WeeklyRanks;
+export default YearlyRanks;

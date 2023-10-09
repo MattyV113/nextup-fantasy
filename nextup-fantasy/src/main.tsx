@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AuthContextProvider } from './context/authContext.tsx';
 import WeeklyRanks from './pages/WeeklyRanks.tsx';
 import Navbar from './pages/NavBar/Navbar.tsx';
+import YearlyRanks from './pages/YearlyRankings.tsx';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: '/weekly-rankings',
     element: <WeeklyRanks />,
+  },
+  {
+    path: '/season-rankings',
+    element: <YearlyRanks />,
   },
 ]);
 
