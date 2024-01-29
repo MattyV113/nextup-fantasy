@@ -47,18 +47,21 @@ function App() {
   return (
     <>
       <Navbar />
-      <div>
+      <div className="">
         <h1 className=" mt-4 text-4xl">NextUp Fantasy</h1>
-        {lastestNews.slice(0, 5).map((news: NewsTypes) => (
-          <>
-            <NewsCard
-              link={news.link}
-              title={news.title}
-              image={news.image}
-              playerId={news.playerId}
-            />
-          </>
-        ))}
+        <h3 className="mt-[100px]">Latest News and Reports</h3>
+        <div className="mt-[50px] grid grid-cols-2 gap-4 justify-between">
+          {lastestNews.slice(0, 5).map((news: NewsTypes) => (
+            <>
+              <NewsCard
+                link={news.link}
+                title={news.title}
+                image={news.image}
+                playerId={news.playerId}
+              />
+            </>
+          ))}
+        </div>
       </div>
     </>
   );

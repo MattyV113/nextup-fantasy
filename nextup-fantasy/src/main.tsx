@@ -7,6 +7,8 @@ import { AuthContextProvider } from './context/authContext.tsx';
 import WeeklyRanks from './pages/WeeklyRanks.tsx';
 import Navbar from './pages/NavBar/Navbar.tsx';
 import YearlyRanks from './pages/YearlyRankings.tsx';
+import Profile from './pages/Profile.tsx';
+import StartSitDecision from './pages/StartSitDecision.tsx';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
   {
     path: '/season-rankings',
     element: <YearlyRanks />,
+  },
+  {
+    path: '/start-sit',
+    element: <StartSitDecision />,
+  },
+  {
+    path: '/profile/:id',
+    element: <Profile />,
   },
 ]);
 

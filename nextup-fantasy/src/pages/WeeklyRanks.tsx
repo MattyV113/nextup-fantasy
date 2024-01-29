@@ -1,46 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Navbar from './NavBar/Navbar';
 import { Button } from '@material-tailwind/react';
-
-type PlayerData = {
-  [playerID: string]: {
-    pos: string;
-    Rushing: {
-      rushYds: string;
-      carries: string;
-      rushTD: string;
-      // Define other properties here
-    };
-    Passing: {
-      passYds: string;
-      passTd: string;
-      passAttempts: string;
-      passCompletions: string;
-      int: string;
-    };
-    Receiving: {
-      receptions: string;
-      recTD: string;
-      recYds: string;
-      targets: string;
-    };
-    fantasyPoints: string;
-    fantasyPointsDefault: {
-      standard: string;
-      PPR: string;
-      halfPPR: string;
-    };
-    fumblesLost: string;
-
-    longName: string;
-    playerID: string;
-
-    team: string;
-    teamID: string;
-    twoPointConversion: string;
-    // Define other properties here
-  };
-};
+import { PlayerData } from './YearlyRankings';
 
 function WeeklyRanks() {
   const scoringButtons = [
@@ -50,7 +11,7 @@ function WeeklyRanks() {
 
   const [selectedScoring, setSelectedScoring] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
-  const [pointsPerRec, setPointsPerRec] = useState<number | null>(null);
+  const [pointsPerRec, setPointsPerRec] = useState<string | null>(null);
   const [position, setPosition] = useState<string | null>(null);
   const [playerData, setPlayerData] = useState<PlayerData>({});
 
@@ -60,11 +21,11 @@ function WeeklyRanks() {
         prevSelected === buttonName ? null : buttonName
       );
       if (buttonName === 'PPR') {
-        setPointsPerRec(1);
+        setPointsPerRec('1');
       } else if (buttonName === 'Half PPR') {
-        setPointsPerRec(0.5);
+        setPointsPerRec('0.5');
       } else if (buttonName === 'Standard') {
-        setPointsPerRec(0);
+        setPointsPerRec('0');
       }
     } else if (categoryName === 'Position') {
       setSelectedPosition((prevSelected) =>
@@ -115,7 +76,7 @@ function WeeklyRanks() {
 
     setSelectedPosition('QB');
     setSelectedScoring('PPR');
-    setPointsPerRec(1);
+    setPointsPerRec('1');
     setPosition('QB');
   }, [options, url]);
 
@@ -163,20 +124,22 @@ function WeeklyRanks() {
           <br />
           <br />
           <br />
-          <h1>{position} Rankings</h1>
+          <h1>{position} Rankings Week 5</h1>
 
-          <div className="flex flex-col gap-4 mr-auto mt-[100px] h-[100vh]">
+          <div className="flex w-full flex-col gap-2 mr-auto mt-[100px] h-[100vh]">
             {positionPlayerData.map((playerID, idx) => {
               const data = playerData[playerID];
 
               // Extract specific data points for the current playerData here
               return (
                 <div
-                  className="flex flex-row gap-4 rounded bg-white text-black p-4"
+                  className="flex w-[50%] m-auto justify-between mb-4  flex-row rounded text-white border border-white p-4"
                   key={playerID}
                 >
-                  <p>{idx + 1}</p>
-                  <h2>Player: {data.longName}</h2>
+                  <h2>
+                    {idx + 1}. {data.longName} | {data.team}
+                  </h2>
+
                   <p>Projection: {data.fantasyPoints}</p>
                 </div>
               );
