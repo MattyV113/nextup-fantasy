@@ -5,7 +5,7 @@ import { PlayerData } from './YearlyRankings';
 
 function WeeklyRanks() {
   const scoringButtons = [
-    { Name: 'Scoring Format', buttons: ['PPR', 'Half PPR', 'Standard'] },
+    { Name: 'Scoring Format', buttons: ['PPR', '1/2 PPR', 'Standard'] },
     { Name: 'Position', buttons: ['QB', 'RB', 'WR', 'TE'] },
   ];
 
@@ -22,7 +22,7 @@ function WeeklyRanks() {
       );
       if (buttonName === 'PPR') {
         setPointsPerRec('1');
-      } else if (buttonName === 'Half PPR') {
+      } else if (buttonName === '1/2 PPR') {
         setPointsPerRec('0.5');
       } else if (buttonName === 'Standard') {
         setPointsPerRec('0');
@@ -46,7 +46,7 @@ function WeeklyRanks() {
     }
   };
 
-  const url = `https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLProjections?week=4&twoPointConversions=2&passYards=.04&passAttempts=0&passTD=6&passCompletions=0&passInterceptions=-4&pointsPerReception=${pointsPerRec}&carries=0&rushYards=.1&rushTD=6&fumbles=-2&receivingYards=.1&receivingTD=6&targets=.1`;
+  const url = `https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLProjections?week=16&twoPointConversions=2&passYards=.04&passAttempts=0&passTD=6&passCompletions=0&passInterceptions=-4&pointsPerReception=${pointsPerRec}&carries=0&rushYards=.1&rushTD=6&fumbles=-2&receivingYards=.1&receivingTD=6&targets=.1`;
 
   const options = useMemo(
     () => ({
@@ -73,11 +73,6 @@ function WeeklyRanks() {
       }
     }
     getPlayerData();
-
-    setSelectedPosition('QB');
-    setSelectedScoring('PPR');
-    setPointsPerRec('1');
-    setPosition('QB');
   }, [options, url]);
 
   const positionPlayerData = position
@@ -96,7 +91,6 @@ function WeeklyRanks() {
       <Navbar />
       <div>
         <div className="flex flex-col justify-center mt-4">
-          <h1>Week 4 Rankings</h1>
           <br />
           <ul className="flex flex-row m-auto gap-[120px]">
             {scoringButtons.map((category) => (
@@ -124,7 +118,7 @@ function WeeklyRanks() {
           <br />
           <br />
           <br />
-          <h1>{position} Rankings Week 5</h1>
+          <h1>{position} Rankings Week 16</h1>
 
           <div className="flex w-full flex-col gap-2 mr-auto mt-[100px] h-[100vh]">
             {positionPlayerData.map((playerID, idx) => {

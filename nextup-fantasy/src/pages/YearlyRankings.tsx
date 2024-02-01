@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Navbar from './NavBar/Navbar';
 import { Button } from '@material-tailwind/react';
 
@@ -44,20 +44,16 @@ export type PlayerData = {
 
 function YearlyRanks() {
   const scoringButtons = [
-    { Name: 'Scoring Format', buttons: ['PPR', 'Half PPR', 'Standard'] },
+    { Name: 'Scoring Format', buttons: ['PPR', '1/2 PPR', 'Standard'] },
     { Name: 'Position', buttons: ['QB', 'RB', 'WR', 'TE'] },
   ];
 
-  const [week, setWeek] = useState<string>('5');
-  const [selectedScoring, setSelectedScoring] = useState<string | null>('PPR');
+  const [selectedScoring, setSelectedScoring] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
-  const [pointsPerRec, setPointsPerRec] = useState<string | null>('1');
+  const [pointsPerRec, setPointsPerRec] = useState<string | null>(null);
   const [position, setPosition] = useState<string | null>(null);
   const [playerData, setPlayerData] = useState<PlayerData>({});
-
-  const handleWeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setWeek(e.currentTarget.value);
-  };
+  const [week, setWeek] = useState<string>('16');
 
   const handleButtonClick = (categoryName: string, buttonName: string) => {
     if (categoryName === 'Scoring Format') {
@@ -66,7 +62,7 @@ function YearlyRanks() {
       );
       if (buttonName === 'PPR') {
         setPointsPerRec('1');
-      } else if (buttonName === 'Half PPR') {
+      } else if (buttonName === '1/2 PPR') {
         setPointsPerRec('0.5');
       } else if (buttonName === 'Standard') {
         setPointsPerRec('0');
@@ -90,21 +86,27 @@ function YearlyRanks() {
     }
   };
 
+  const handleWeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWeek(e.currentTarget.value);
+  };
+
+  const url = `https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLProjections?week=${week}&twoPointConversions=2&passYards=.04&passAttempts=0&passTD=6&passCompletions=0&passInterceptions=-4&pointsPerReception=${pointsPerRec}&carries=0&rushYards=.1&rushTD=6&fumbles=-2&receivingYards=.1&receivingTD=6&targets=.1`;
+
+  const options = useMemo(
+    () => ({
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': 'a3359fe54emsh86ff1ae90736126p120af4jsn6797c9bcf4e4',
+        'X-RapidAPI-Host':
+          'tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com',
+      },
+    }),
+    []
+  );
+
   useEffect(() => {
-    /*
     async function getPlayerData() {
       try {
-        const url = `https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLProjections?week=${week}&twoPointConversions=2&passYards=.04&passAttempts=0&passTD=6&passCompletions=0&passInterceptions=-4&pointsPerReception=${pointsPerRec}&carries=0&rushYards=.1&rushTD=6&fumbles=-2&receivingYards=.1&receivingTD=6&targets=.1`;
-
-        const options = {
-          method: 'GET',
-          headers: {
-            'X-RapidAPI-Key':
-              'a3359fe54emsh86ff1ae90736126p120af4jsn6797c9bcf4e4',
-            'X-RapidAPI-Host':
-              'tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com',
-          },
-        };
         const response = await fetch(url, options);
         const result = await response.json();
         const data = result.body.playerProjections;
@@ -115,8 +117,7 @@ function YearlyRanks() {
       }
     }
     getPlayerData();
-    */
-  }, []);
+  }, [options, url, week]);
 
   const positionPlayerData = position
     ? Object.keys(playerData)

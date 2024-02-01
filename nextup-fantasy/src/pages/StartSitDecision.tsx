@@ -127,7 +127,7 @@ function StartSitDecision() {
           method: 'GET',
           headers: {
             'X-RapidAPI-Key':
-              'a3359fe54emsh86ff1ae90736126p120af4jsn6797c9bcf4e4',
+              '8c30d39afcmsh1a0df2646f934fcp16591fjsn2ee4c5365179',
             'X-RapidAPI-Host':
               'tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com',
           },
@@ -136,13 +136,13 @@ function StartSitDecision() {
         const result = await response.json();
         const data = result.body.playerProjections;
         setPlayerData(data);
-        // console.log(data);
+        console.log(data);
       } catch (error) {
         console.error(error);
       }
     }
     getPlayerData();
-  }, [pointsPerRec, week]);
+  }, []);
 
   const playerOneData = Object.keys(playerData)
     .filter((playerID) => playerData[playerID].longName === playerOne)
@@ -192,7 +192,7 @@ function StartSitDecision() {
           const result = await response.json();
           const data = result.body;
           setPlayerInfo(data);
-          console.log(playerInfo);
+          console.log(data);
         } catch (error) {
           console.error(error);
         }
@@ -200,7 +200,7 @@ function StartSitDecision() {
     }
 
     getPlayerInfo();
-  }, [bestPlayerID, playerInfo]);
+  }, [bestPlayerID]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -225,10 +225,8 @@ function StartSitDecision() {
                     key={buttonName}
                     onClick={() => handleButtonClick(category.Name, buttonName)}
                     className={
-                      (category.Name === 'Scoring Format' &&
-                        selectedScoring === buttonName) ||
-                      (category.Name === 'Position' &&
-                        selectedPosition === buttonName)
+                      category.Name === 'Scoring Format' &&
+                      selectedScoring === buttonName
                         ? 'p-2 bg-blue-500 h-[45px] text-md w-[80px]'
                         : 'p-2 h-[45px] text-md w-[80px]'
                     }
